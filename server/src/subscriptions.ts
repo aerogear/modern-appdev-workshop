@@ -1,7 +1,4 @@
-import { RedisPubSub } from 'graphql-redis-subscriptions'
+import { PubSub } from 'apollo-server'
 import Redis from 'ioredis'
 
-export const pubsub = new RedisPubSub({
-  publisher: new Redis(6789),
-  subscriber: new Redis(6789)
-})
+export const pubsub = new PubSub()
