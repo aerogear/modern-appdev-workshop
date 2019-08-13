@@ -1,24 +1,19 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+
+import { AutoFields, AutoForm, ErrorsField, SubmitField } from 'uniforms-semantic';
+import { PostSchema } from './forms/GraphQLBridge';
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <AutoForm schema={PostSchema} onSubmit={console.log} >
+        <h4>Create new element</h4>
+        <AutoFields />
+        <ErrorsField />
+        <SubmitField />
+      </AutoForm>
+      <h4>List of elements</h4>
     </div>
   );
 }
