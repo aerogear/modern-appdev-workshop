@@ -7,7 +7,8 @@ import { PostSchema } from './forms/GraphQLBridge';
 
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import { ApolloConsumer } from "react-apollo"
+
+import { graphqlClient } from "./graphql/client"
 
 
 const allNotesQuery = gql`
@@ -24,14 +25,12 @@ const allNotesQuery = gql`
 const App: React.FC = () => {
   return (
     <div className="App">
-      <ApolloConsumer>
-        <AutoForm schema={PostSchema} onSubmit={doc => createPost(doc, client)} >
-          <h4>Create new element</h4>
-          <AutoFields />
-          <ErrorsField />
-          <SubmitField />
-        </AutoForm>
-      </ApolloConsumer>
+      <AutoForm schema={PostSchema} onSubmit={doc => createPost(doc, graphqlClient)} >
+        <h4>Create new element</h4>
+        <AutoFields />
+        <ErrorsField />
+        <SubmitField />
+      </AutoForm>
       <h4>List of elements</h4>
       <Posts />
     </div>
