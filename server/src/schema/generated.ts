@@ -5,6 +5,7 @@ export const typeDefs = gql`
     id: ID!
     title: String!
     description: String!
+    description: String!
     comments: [Comment!]
   }
 
@@ -18,6 +19,7 @@ export const typeDefs = gql`
   input NoteInput {
     title: String!
     description: String!
+    description: String!
   }
 
   input CommentInput {
@@ -29,6 +31,7 @@ export const typeDefs = gql`
   input NoteFilter {
     id: ID
     title: String
+    description: String
     description: String
   }
 
