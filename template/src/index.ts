@@ -5,12 +5,13 @@ import http from "http"
 import { useSofa } from "sofa-api"
 
 import { VoyagerServer } from '@aerogear/voyager-server';
+import { createSubscriptionServer } from '@aerogear/voyager-subscriptions'
 
+import { KeycloakSecurityService } from '@aerogear/voyager-keycloak';
 import config from "./config/config"
 import { connect } from "./db"
 import { resolvers, typeDefs } from "./mapping"
 import { pubsub } from './subscriptions'
-import { KeycloakSecurityService } from '@aerogear/voyager-keycloak';
 
 async function start() {
   const app = express()
@@ -24,28 +25,13 @@ async function start() {
     resolvers,
   });
 
-  app.use("/rest", useSofa({
-    schema,
-  }))
+  // app.use("/rest", useSofa({
+  //   schema,
+  // }))
 
   // connect to db
   const client = await connect(config.db);
-
-  const apolloConfig = {
-    typeDefs,
-    resolvers,
-    context: async ({
-      req
-    }: { req: express.Request }) => {
-      // pass request + db ref into context for each resolver
-      return {
-        req: req,
-        db: client,
-        pubsub
-      }
-    }
-  }
-  let securityService;
+  let securityService: KeycloakSecurityService;
 
   // if a keycloak config is present we create
   // a keycloak service which will be passed into
@@ -79,8 +65,15 @@ async function start() {
   const httpServer = http.createServer(app)
   apolloServer.installSubscriptionHandlers(httpServer)
 
-  httpServer.listen({ port: config.port }, () => {
+  const server = app.listen(config.port, () => {
     console.log(`🚀  Server ready at http://localhost:${config.port}/graphql`)
+    createSubscriptionServer({
+      securityService,
+      schema: schema
+    }, {
+        path: '/graphql',
+        server
+      })
   })
 }
 
