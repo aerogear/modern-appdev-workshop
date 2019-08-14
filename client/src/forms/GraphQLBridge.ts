@@ -1,6 +1,6 @@
 import { buildASTSchema, parse, visit } from 'graphql';
 import { GraphQLBridge } from 'uniforms-bridge-graphql';
-import { schema } from '../schema'
+import { schema } from '../graphql/schema'
 
 const compiledSchema = buildASTSchema(parse(schema))
 const schemaType = compiledSchema.getType('Post');

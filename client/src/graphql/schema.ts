@@ -1,8 +1,8 @@
 export const schema = `
     type Post {
         id:     Int!
+        name:  String
         title:  String
-        name:  Int
     }
     # This is required by buildASTSchema
     type Query { anything: ID }
