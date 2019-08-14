@@ -1,7 +1,4 @@
 {
-  "include": [
-    "src/**"
-  ],
   "compilerOptions": {
     "outDir": "./dist/",
     "declarationDir": "./types",
@@ -30,5 +27,5 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noImplicitThis": false
-  },
+  }
 }
