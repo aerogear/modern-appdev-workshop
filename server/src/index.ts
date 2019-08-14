@@ -4,7 +4,7 @@ import { makeExecutableSchema } from 'graphql-tools';
 import http from "http"
 import { useSofa } from "sofa-api"
 
-import { ApolloServer } from "apollo-server-express"
+import { VoyagerServer } from '@aerogear/voyager-server';
 
 import config from "./config/config"
 import { connect } from "./db"
@@ -44,8 +44,29 @@ async function start() {
       }
     }
   }
+  let keycloakService;
 
-  const apolloServer = new ApolloServer(apolloConfig)
+  // if a keycloak config is present we create
+  // a keycloak service which will be passed into
+  // ApolloVoyagerServer
+  if (config.keycloakConfig) {
+    keycloakService = new KeycloakSecurityService(config.keycloakConfig)
+  }
+
+  const apolloServer = VoyagerServer({
+    typeDefs,
+    resolvers,
+    context: async ({
+      req
+    }: { req: express.Request }) => {
+      // pass request + db ref into context for each resolver
+      return {
+        req: req,
+        db: client,
+        pubsub
+      }
+    }
+  }, {});
 
   apolloServer.applyMiddleware({ app })
 

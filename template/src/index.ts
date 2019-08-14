@@ -4,12 +4,13 @@ import { makeExecutableSchema } from 'graphql-tools';
 import http from "http"
 import { useSofa } from "sofa-api"
 
-import { VoyagerServer, gql } from '@aerogear/voyager-server';
+import { VoyagerServer } from '@aerogear/voyager-server';
 
 import config from "./config/config"
 import { connect } from "./db"
 import { resolvers, typeDefs } from "./mapping"
 import { pubsub } from './subscriptions'
+import { KeycloakSecurityService } from '@aerogear/voyager-keycloak';
 
 async function start() {
   const app = express()
@@ -44,10 +45,21 @@ async function start() {
       }
     }
   }
+  let securityService;
+
+  // if a keycloak config is present we create
+  // a keycloak service which will be passed into
+  // ApolloVoyagerServer
+  if (config.keycloakConfig) {
+    securityService = new KeycloakSecurityService(config.keycloakConfig)
+    securityService.applyAuthMiddleware(app)
+  }
 
   const apolloServer = VoyagerServer({
     typeDefs,
     resolvers,
+    playground: config.playgroundConfig,
+    introspection: true,
     context: async ({
       req
     }: { req: express.Request }) => {
@@ -58,7 +70,9 @@ async function start() {
         pubsub
       }
     }
-  }, {});
+  }, {
+      // securityService
+    });
 
   apolloServer.applyMiddleware({ app })
 
