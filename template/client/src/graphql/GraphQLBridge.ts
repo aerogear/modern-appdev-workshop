@@ -1,10 +1,9 @@
 import { buildASTSchema, parse, visit } from 'graphql';
 import { GraphQLBridge } from 'uniforms-bridge-graphql';
-import { schema } from '../graphql/schema'
+import { schema } from './schema'
 
 const compiledSchema = buildASTSchema(parse(schema))
-const schemaType = compiledSchema.getType('Post');
-
+const schemaType = compiledSchema.getType('Task');
 
 const schemaData = {
 };
