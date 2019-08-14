@@ -3,6 +3,5 @@ type Task {
   version: Int
   title: String!
   description: String!
-  assignee: String
   status: String
 }

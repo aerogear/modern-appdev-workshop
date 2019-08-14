@@ -8,3 +8,7 @@ tmp/nanoc/
 
 # Crash Log
 crash.log
+
+template/src/schema/
+template/src/resolvers/
+template/src/schema/
