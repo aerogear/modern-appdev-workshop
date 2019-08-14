@@ -7,14 +7,8 @@ fragment TaskFields on Task {
 }
 
 mutation createTask {
-  createTask(title: "Task1", description: "test", status: OPEN) {
+  createTask(input: {title: "Task1", description: "test", status: "CREATED"}) {
      ...TaskFields
-  }
-}
-
-mutation updateTask {
-  updateTask(id: "1", title: "Task2", version: 1) {
-    ...TaskFields
   }
 }
 
@@ -23,3 +17,10 @@ query findAllTasks {
     ...TaskFields
   }
 }
+
+mutation updateTask {
+  updateTask(input: {id: "1", title: "Task2", version: 1}) {
+    ...TaskFields
+  }
+}
+
