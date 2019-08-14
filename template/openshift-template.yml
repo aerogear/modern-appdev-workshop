@@ -1,49 +1,45 @@
+
 ---
 
 apiVersion: v1
 kind: Template
 labels:
-  template: ionic-app-server
+  template: aerogear-modern-appdev-workshop
 metadata:
-  name: datasync-app-server
+  name: aerogear-modern-appdev-workshop
   annotations:
-    openshift.io/display-name: Data Sync App
+    openshift.io/display-name: AeroGear Modern App Dev Workshop
     description: |-
-        This template allows for the deployment of the Data Sync Example App App.
-        The Data Sync Example App App contains an example Node.js server implementation that 
-        connects to a PostgreSQL Database. The deployed App can be used with the Ionic App application.
-    tags: sync, mobile, nodejs
+        Deploys a backend server and a PostgreSQL Database
     iconClass: icon-nodejs
     openshift.io/provider-display-name: Red Hat, Inc.
     openshift.io/documentation-url: https://docs.aerogear.org/aerogear/latest/data-sync.html#sync-server-openshift
     openshift.io/support-url: https://access.redhat.com
     template.openshift.io/bindable: 'false'
 objects:
+
 - apiVersion: v1
   kind: Secret
   metadata:
-    labels:
-      app: ionic-app-server
     annotations:
       template.openshift.io/expose-database_name: "{.data['database-name']}"
       template.openshift.io/expose-password: "{.data['database-password']}"
       template.openshift.io/expose-username: "{.data['database-user']}"
-      description: |-
-        OpenShift template for Data Sync Server
-        and PostgreSQL database width persistent storage.
-    name: "${DATABASE_SERVICE_NAME}"
+    name: postgresql-credentials
   stringData:
     database-name: "${POSTGRESQL_DATABASE}"
     database-password: "${POSTGRESQL_PASSWORD}"
     database-user: "${POSTGRESQL_USER}"
+
+
 - apiVersion: v1
   kind: Service
   metadata:
     labels:
-      app: ionic-app-server
+      app: ${APPLICATION_NAME}
     annotations:
       template.openshift.io/expose-uri: postgres://{.spec.clusterIP}:{.spec.ports[?(.name=="postgresql")].port}
-    name: "${DATABASE_SERVICE_NAME}"
+    name: postgresql
   spec:
     ports:
     - name: postgresql
@@ -52,41 +48,43 @@ objects:
       protocol: TCP
       targetPort: 5432
     selector:
-      name: "${DATABASE_SERVICE_NAME}"
+      name: postgresql
     sessionAffinity: None
     type: ClusterIP
   status:
     loadBalancer: {}
+
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
     labels:
-      app: ionic-app-server
-    name: "${DATABASE_SERVICE_NAME}"
+      app: ${APPLICATION_NAME}
+    name: postgresql
   spec:
     accessModes:
     - ReadWriteOnce
     resources:
       requests:
         storage: "${VOLUME_CAPACITY}"
+
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
     labels:
-      app: ionic-app-server
+      app: ${APPLICATION_NAME}
     annotations:
       template.alpha.openshift.io/wait-for-ready: 'true'
-    name: "${DATABASE_SERVICE_NAME}"
+    name: postgresql
   spec:
     replicas: 1
     selector:
-      name: "${DATABASE_SERVICE_NAME}"
+      name: postgresql
     strategy:
       type: Recreate
     template:
       metadata:
         labels:
-          name: "${DATABASE_SERVICE_NAME}"
+          name: postgresql
       spec:
         containers:
         - capabilities: {}
@@ -95,17 +93,17 @@ objects:
             valueFrom:
               secretKeyRef:
                 key: database-user
-                name: "${DATABASE_SERVICE_NAME}"
+                name: postgresql-credentials
           - name: POSTGRESQL_PASSWORD
             valueFrom:
               secretKeyRef:
                 key: database-password
-                name: "${DATABASE_SERVICE_NAME}"
+                name: postgresql-credentials
           - name: POSTGRESQL_DATABASE
             valueFrom:
               secretKeyRef:
                 key: database-name
-                name: "${DATABASE_SERVICE_NAME}"
+                name: postgresql-credentials
           image: " "
           imagePullPolicy: IfNotPresent
           livenessProbe:
@@ -127,20 +125,20 @@ objects:
             timeoutSeconds: 1
           resources:
             limits:
-              memory: "${MEMORY_LIMIT}"
+              memory: 512Mi
           securityContext:
             capabilities: {}
             privileged: false
           terminationMessagePath: "/dev/termination-log"
           volumeMounts:
           - mountPath: "/var/lib/pgsql/data"
-            name: "${DATABASE_SERVICE_NAME}-data"
+            name: "postgresql-data"
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         volumes:
-        - name: "${DATABASE_SERVICE_NAME}-data"
+        - name: "postgresql-data"
           persistentVolumeClaim:
-            claimName: "${DATABASE_SERVICE_NAME}"
+            claimName: postgresql
     triggers:
     - imageChangeParams:
         automatic: true
@@ -149,7 +147,7 @@ objects:
         from:
           kind: ImageStreamTag
           name: postgresql:${POSTGRESQL_VERSION}
-          namespace: "${NAMESPACE}"
+          namespace: openshift
         lastTriggeredImage: ''
       type: ImageChange
     - type: ConfigChange
@@ -159,107 +157,67 @@ objects:
   kind: ImageStream
   metadata:
     labels:
-      app: ionic-app-server
-    name: ionic-app-server
-    
-- apiVersion: v1
-  kind: BuildConfig
-  metadata:
-    labels:
-      app: ionic-app-server
-    name: ionic-app-server
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
   spec:
-    output:
-      to:
-        kind: ImageStreamTag
-        name: ionic-app-server:latest
-    source:
-      contextDir: server
-      git:
-        uri: https://github.com/aerogear/modern-appdev-workshop
-      type: Git
-    strategy:
-      sourceStrategy:
-        from:
-          kind: ImageStreamTag
-          namespace: openshift
-          name: nodejs:10
-      type: Source
-    triggers:
-    - type: ConfigChange
-    - imageChange: {}
-      type: ImageChange
+    tags:
+    - from:
+        kind: DockerImage
+        name: ${APPLICATION_IMAGE}
+      name: latest
+      importPolicy:
+        scheduled: true
+    
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
-    annotations:
-      openshift.io/generated-by: OpenShiftNewApp
-    creationTimestamp: null
     labels:
-      app: ionic-app-server
-    name: ionic-app-server
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
   spec:
     replicas: 1
     selector:
-      app: ionic-app-server
-      deploymentconfig: ionic-app-server
+      deploymentconfig: ${APPLICATION_NAME}
     strategy:
       resources: {}
     template:
       metadata:
-        annotations:
-          openshift.io/generated-by: OpenShiftNewApp
-        creationTimestamp: null
         labels:
-          app: ionic-app-server
-          deploymentconfig: ionic-app-server
+          deploymentconfig: ${APPLICATION_NAME}
       spec:
         containers:
-        - env:
-            - name: DB_HOSTNAME
-              value: "${DATABASE_SERVICE_NAME}"
-            - name: MQTT_HOST
-              value: mosquitto-mqtt-broker
-          image: ionic-app-server:latest
-          name: ionic-app-server
+        - name: ${APPLICATION_NAME}
+          image: ${APPLICATION_NAME}:latest
+          imagePullPolicy: Always
+          env:
+            - name: DB_HOST
+              value: postgresql
+            - name: DB_USER
+              value: ${POSTGRESQL_USER}
+            - name: DB_PASSWORD
+              value: ${POSTGRESQL_PASSWORD}
+            - name: DB_DATABASE
+              value: ${POSTGRESQL_DATABASE}
           ports:
           - containerPort: 4000
             protocol: TCP
-          resources: {}
-          volumeMounts:
-          - mountPath: /usr/src/app/files
-            name: files-storage
-        volumes:
-        - name: files-storage
-          persistentVolumeClaim:
-            claimName: postgresql
-    test: false
     triggers:
     - type: ConfigChange
     - imageChangeParams:
         automatic: true
         containerNames:
-        - ionic-app-server
+        - ${APPLICATION_NAME}
         from:
           kind: ImageStreamTag
-          name: ionic-app-server:latest
+          name: ${APPLICATION_NAME}:latest
       type: ImageChange
-  status:
-    availableReplicas: 0
-    latestVersion: 0
-    observedGeneration: 0
-    replicas: 0
-    unavailableReplicas: 0
-    updatedReplicas: 0
+
 - apiVersion: v1
   kind: Service
   metadata:
-    annotations:
-      openshift.io/generated-by: OpenShiftNewApp
-    creationTimestamp: null
     labels:
-      app: ionic-app-server
-    name: ionic-app-server
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
   spec:
     ports:
     - name: 4000-tcp
@@ -267,118 +225,57 @@ objects:
       protocol: TCP
       targetPort: 4000
     selector:
-      app: ionic-app-server
-      deploymentconfig: ionic-app-server
+      deploymentconfig: ${APPLICATION_NAME}
   status:
     loadBalancer: {}
+
 - apiVersion: v1
   kind: Route
   metadata:
     labels:
-      app: ionic-app-server
-    name: "${SERVER_SERVICE_NAME}"
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
   spec:
     host: ""
     to:
       kind: Service
-      name: "${SERVER_SERVICE_NAME}"
+      name: ${APPLICATION_NAME}
     tls:
       termination: edge
       insecureEdgeTerminationPolicy: Allow
 
-- kind: DeploymentConfig
-  apiVersion: v1
-  name: mosquitto-mqtt-broker
-  metadata:
-    annotations:
-      openshift.io/generated-by: OpenShiftNewApp
-    creationTimestamp: null
-    labels:
-      app: ionic-app-server
-    name: mosquitto-mqtt-broker
-  spec:
-    replicas: 1
-    selector:
-      app: ionic-app-server
-      deploymentconfig: mosquitto-mqtt-broker
-    strategy:
-      resources: {}
-    template:
-      metadata:
-        annotations:
-          openshift.io/generated-by: OpenShiftNewApp
-        creationTimestamp: null
-        labels:
-          app: ionic-app-server
-          deploymentconfig: mosquitto-mqtt-broker
-      spec:
-        containers:
-          - name: mosquitto-mqtt-broker
-            image: eclipse-mosquitto:latest
-            ports:
-              - containerPort: 1883
-                protocol: TCP
-    strategy: 
-      type: Rolling
-    paused: false 
-    revisionHistoryLimit: 2 
-    minReadySeconds: 0
-
-- apiVersion: v1
-  kind: Service
-  metadata:
-    annotations:
-      openshift.io/generated-by: OpenShiftNewApp
-    creationTimestamp: null
-    labels:
-      app: ionic-app-server
-    name: mosquitto-mqtt-broker
-  spec:
-    ports:
-    - name: 1883-tcp
-      port: 1883
-      protocol: TCP
-      targetPort: 1883
-    selector:
-      app: ionic-app-server
-      deploymentconfig: mosquitto-mqtt-broker
-  status:
-    loadBalancer: {}
-
 parameters:
-- description: Maximum amount of memory the container can use.
-  displayName: Memory Limit
-  name: MEMORY_LIMIT
-  value: 512Mi
-- description: The OpenShift Namespace where the ImageStream resides.
-  displayName: Namespace
-  name: NAMESPACE
-  value: openshift
-- description: The name of the OpenShift Service exposed for the database.
-  displayName: Database Service Name
-  name: DATABASE_SERVICE_NAME
-  value: postgresql
+
+- description: A valid URL for a docker image that represents your application
+  displayName: Application Docker Image
+  name: APPLICATION_IMAGE
+
+- description: Name of the Application. Applied to OpenShift resources such as routes, services, pods, etc.
+  displayName: Application Name
+  name: APPLICATION_NAME
+  value: modern-appdev-workshop
+
 - description: Username for PostgreSQL user that will be used for accessing the database.
   displayName: PostgreSQL Connection Username
   name: POSTGRESQL_USER
-  value: postgresql
+  value: testuser
+  
 - description: Password for the PostgreSQL connection user.
   displayName: PostgreSQL Connection Password
   name: POSTGRESQL_PASSWORD
-  value: postgres
+  value: testpassword
+
 - description: Name of the PostgreSQL database accessed.
   displayName: PostgreSQL Database Name
   name: POSTGRESQL_DATABASE
-  value: users
+  value: sample_db
+
 - description: Volume space available for data, e.g. 512Mi, 2Gi.
   displayName: Volume Capacity
   name: VOLUME_CAPACITY
   value: 1Gi
+
 - description: Version of PostgreSQL image to be used (10 or latest).
   displayName: Version of PostgreSQL Image
   name: POSTGRESQL_VERSION
   value: '10'
-- description: The name of the OpenShift Service exposed for the Ionic Server.
-  displayName: Ionic Server Service name
-  name: SERVER_SERVICE_NAME
-  value: ionic-app-server
