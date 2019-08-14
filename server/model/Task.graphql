@@ -1,8 +1,0 @@
-type Task {
-  id: ID!
-  version: Int
-  title: String!
-  description: String!
-  assignee: String
-  status: String
-}
