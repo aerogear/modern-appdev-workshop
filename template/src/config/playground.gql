@@ -19,8 +19,9 @@ query findAllTasks {
 }
 
 mutation updateTask {
-  updateTask(input: {id: "1", title: "Task2", version: 1}) {
+  updateTask(id: "1", input: { title: "Task2", version: 1}) {
     ...TaskFields
   }
 }
+
 
