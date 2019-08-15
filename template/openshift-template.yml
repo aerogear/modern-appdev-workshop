@@ -198,6 +198,10 @@ objects:
               value: ${POSTGRESQL_PASSWORD}
             - name: DB_DATABASE
               value: ${POSTGRESQL_DATABASE}
+            - name: DB_PORT
+              value: '5432'
+            - name: CREATE_DB
+              value: 'true'
           ports:
           - containerPort: 4000
             protocol: TCP
