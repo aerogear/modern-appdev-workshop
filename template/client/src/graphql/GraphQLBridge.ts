@@ -29,4 +29,4 @@ const schemaValidator = (model: any) => {
     }
 };
 
-export const PostSchema = new GraphQLBridge(schemaType, schemaValidator, schemaData);
+export const TaskSchema = new GraphQLBridge(schemaType, schemaValidator, schemaData);

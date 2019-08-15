@@ -15,7 +15,6 @@ createClient().then((client) => {
             <App />
         </ApolloProvider>
         , document.getElementById('root'));
-
 })
 
 
