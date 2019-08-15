@@ -16,10 +16,10 @@ class Config {
     this.port = process.env.PORT || 4000
 
     this.db = {
-      database: process.env.DB_NAME || config.dbConfig.database,
-      user: process.env.DB_USERNAME || config.dbConfig.user,
+      host: process.env.DB_HOST || config.dbConfig.host,
+      user: process.env.DB_USER || config.dbConfig.user,
       password: process.env.DB_PASSWORD || config.dbConfig.password,
-      host: process.env.DB_HOSTNAME || config.dbConfig.host,
+      database: process.env.DB_DATABASE || config.dbConfig.database,
       port: process.env.DB_PORT || config.dbConfig.port
     }
 
