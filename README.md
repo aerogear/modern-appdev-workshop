@@ -10,10 +10,6 @@ This repository is designed to be working as template for graphback command line
 
 Please reffer to each individual `stepX` branch for individual steps for this tutorial
 
-## Steps
-
-**Work in progress**
-
 ## Introduction
 
 This workshop focused on deploying fully functional webapplication server using 
