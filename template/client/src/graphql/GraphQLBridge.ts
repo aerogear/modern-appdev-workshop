@@ -18,15 +18,7 @@ visit(parse(schema), {
 
 // tslint:disable-next-line: no-any
 const schemaValidator = (model: any) => {
-    // tslint:disable-next-line: no-any
-    const details: any = [];
-    if (!model.id) {
-        details.push({ name: 'id', message: 'ID is required!' });
-    }
-    // ...
-    if (details.length) {
-        throw { details };
-    }
+ 
 };
 
 export const TaskSchema = new GraphQLBridge(schemaType, schemaValidator, schemaData);

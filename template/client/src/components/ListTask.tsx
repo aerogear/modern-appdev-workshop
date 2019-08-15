@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useSubscription } from '@apollo/react-hooks';
 import React from 'react';
 import { List } from 'semantic-ui-react'
 import { TaskQuery } from '../graphql/queries/Tasks';
@@ -6,7 +6,9 @@ import { TaskQuery } from '../graphql/queries/Tasks';
 export const Tasks: React.FC = () => {
     const { loading, error, data } = useQuery(TaskQuery, {
         fetchPolicy: "cache-and-network"
-    });
+    })  
+
+    useSubscription()
 
     if (loading) { return <p>Loading...</p>; }
     if (error) { return <p>Error :(</p>; }

@@ -33,4 +33,8 @@ export const typeDefs = gql`
     createTask(input: TaskInput!): Task!
     updateTask(id: ID!, input: TaskInput!): Task!
   }
+
+  type Subscription {
+    newTask: Task!
+  }
 `

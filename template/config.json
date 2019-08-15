@@ -12,7 +12,7 @@
     "findAll": true,
     "find": true,
     "delete": false,
-    "subCreate": false,
+    "subCreate": true,
     "subUpdate": false,
     "subDelete": false,
     "disableGen": false

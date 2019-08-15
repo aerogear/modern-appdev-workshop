@@ -30,6 +30,7 @@ export const CreateTask: React.FC = () => {
                 if (error.networkError && error.networkError.offline) {
                     console.log("Change is offline")
                 }
+                console.log(error);
             })} >
             <AutoFields />
             <ErrorsField />

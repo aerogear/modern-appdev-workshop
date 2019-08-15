@@ -68,6 +68,11 @@ async function start() {
   const server = app.listen(config.port, () => {
     console.log(`🚀  Server ready at http://localhost:${config.port}/graphql`)
     createSubscriptionServer({
+      onConnect: () => {
+        return {
+          pubsub
+        }
+      },
       securityService,
       schema: schema
     }, {
