@@ -11,11 +11,11 @@ export const CreateTask: React.FC = () => {
         context: { returnType: "Task" }
     });
 
-
     return (
         <AutoForm schema={TaskSchema} onSubmit={(doc: any) =>
             createTaskMutation({
                 variables: doc,
+                context: { returnType: "Task" },
                 optimisticResponse: createOptimisticResponse({
                     mutation: TaskMutation,
                     variables: doc,
@@ -26,6 +26,10 @@ export const CreateTask: React.FC = () => {
                     mutationName: 'createTask',
                     updateQuery: TaskQuery
                 })
+            }).catch((error) => {
+                if (error.networkError && error.networkError.offline) {
+                    console.log("Change is offline")
+                }
             })} >
             <AutoFields />
             <ErrorsField />
