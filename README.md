@@ -101,3 +101,41 @@ and applied following projects
 ```
 npm install 
 ```
+
+## Deployment to OpenShift
+
+### Prerequisites
+
+* Create an account on [Dockerhub](https://hub.docker.com/)
+
+An OpenShift template is provided to deploy the backend server on OpenShift.
+
+1. Log in to the Dockerhub Registry
+
+```bash
+docker login
+```
+
+2. Build the application into a docker image.
+
+```bash
+docker build -t <dockerhubusername>/<imagename>:latest . # ex: docker build -t aerogear/graphback-demo:latest .
+```
+
+3. Push the image to Dockerhub
+
+```bash
+docker push <dockerhubusername>/<imagename>:latest
+```
+
+4. Create the OpenShift template in a namespace of your choice
+
+```bash
+oc process -f openshift-template.yml --param APPLICATION_IMAGE=<dockerhubusername>/<imagename>:latest | oc create -f -
+```
+
+### Cleanup
+
+```bash
+oc process -f openshift-template.yml --param APPLICATION_IMAGE=<dockerhubusername>/<imagename>:latest | oc delete -f -
+```
