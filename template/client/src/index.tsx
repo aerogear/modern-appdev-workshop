@@ -18,7 +18,7 @@ const app = init(mobileConfig as unknown as AeroGearConfiguration)
 const auth = new Auth(app.config as ConfigurationService)
 
 // tslint:disable-next-line: no-floating-promises
-createClient(auth).then((client) => {
+createClient(auth, app).then((client) => {
     ReactDOM.render(
         //@ts-ignore
         <KeycloakProvider keycloak={auth.extract()} initConfig={{ onLoad: 'login-required' }}>

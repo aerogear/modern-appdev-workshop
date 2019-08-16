@@ -1,52 +1,30 @@
 import { DataSyncConfig, OfflineClient } from '@aerogear/voyager-client';
 import { Auth } from '@aerogear/auth';
-import { createHttpLink } from 'apollo-link-http'
-import { setContext } from 'apollo-link-context'
+import { AeroGearApp } from '@aerogear/app';
 
-export const createClient = (auth: Auth) => {
-    let authLink;
-    let terminatingLink; 
-    const httpLink = createHttpLink({
-        uri: 'http://localhost:4000/graphql',
-    })
+export const createClient = (auth: Auth, app: AeroGearApp) => {
 
-    if (auth) {
-        authLink = setContext(async (operation, prevContext) => {
-            const authContextProvider = auth.getAuthContextProvider()
-            const authContext = await authContextProvider()
-            return authContext
-        });
-    }
-
-    if (authLink) {
-        terminatingLink = authLink.concat(httpLink)
-    } else {
-        terminatingLink = httpLink
-    }
-
-    console.log('terminating link', terminatingLink)
-
-    const config : DataSyncConfig = {
+    const config: DataSyncConfig = {
         httpUrl: "http://localhost:4000/graphql",
-        //wsUrl: "ws://localhost:4000/graphql",
-        terminatingLink,
-      openShiftConfig: require("../mobile-services.json"),
-      offlineQueueListener: {
-        onOperationEnqueued: () => {
-            console.log("Operation added to offline queue")
+        wsUrl: "ws://localhost:4000/graphql",
+        authContextProvider: auth.getAuthContextProvider(),
+        openShiftConfig: app.config,
+        offlineQueueListener: {
+            onOperationEnqueued: () => {
+                console.log("Operation added to offline queue")
+            },
+            onOperationSuccess: () => {
+                console.log("Operation replicated")
+            },
+            onOperationFailure: () => {
+                console.log("Operation failed to replicate")
+            }
         },
-        onOperationSuccess: () => {
-            console.log("Operation replicated")
-        },
-        onOperationFailure: () => {
-            console.log("Operation failed to replicate")
+        conflictListener: {
+            conflictOccurred: () => {
+                console.log("Conflict resolved")
+            }
         }
-    },
-    conflictListener: {
-        conflictOccurred: () => {
-            console.log("Conflict resolved")
-        }
-    }
 
     }
 
