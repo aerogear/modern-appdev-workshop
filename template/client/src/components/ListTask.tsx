@@ -1,24 +1,16 @@
-import { useQuery, useSubscription } from '@apollo/react-hooks';
+import { CacheOperation, createSubscriptionOptions } from '@aerogear/voyager-client';
+import { useQuery } from '@apollo/react-hooks';
 import React from 'react';
 import { List } from 'semantic-ui-react'
 import { TaskQuery } from '../graphql/queries/Tasks';
 import { TaskCreateSubscription } from '../graphql/subscriptions/NewTask';
-import { createSubscriptionOptions, CacheOperation } from '@aerogear/voyager-client';
 
 export const Tasks: React.FC = () => {
-    useQuery(TaskQuery, {
-        fetchPolicy: "network-only"
-    })
     const { loading, error, data, subscribeToMore } = useQuery(TaskQuery, {
-        fetchPolicy: "cache-first"
+        fetchPolicy: "cache-and-network"
     })
-    // const options = {
-    //     subscriptionQuery: TaskCreateSubscription,
-    //     cacheUpdateQuery: TaskQuery,
-    //     operationType: CacheOperation.ADD
-    // }
-    // const subOptions = createSubscriptionOptions(options);
-    // subscribeToMore(subOptions)
+
+    initSubscription(subscribeToMore);
 
     if (loading) { return <p>Loading...</p>; }
     if (error) { return <p>Error :(</p>; }
@@ -37,3 +29,13 @@ export const Tasks: React.FC = () => {
         </List>
     ));
 }
+function initSubscription(subscribeToMore) {
+    const options = {
+        subscriptionQuery: TaskCreateSubscription,
+        cacheUpdateQuery: TaskQuery,
+        operationType: CacheOperation.ADD
+    };
+    const subOptions = createSubscriptionOptions(options);
+    subscribeToMore(subOptions);
+}
+
