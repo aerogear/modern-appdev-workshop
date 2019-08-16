@@ -77,16 +77,16 @@ one.
 3. Run `graphback generate` to generate schema and resolvers
 
 4. Run `docker-compose up -d` to run your database
-   and graphback db to create database resources in postgres
+   and `graphback db` to create database resources in postgres
 
 5. Run `graphback watch` to start the server and watch for changes
    in model.
 
 6. Server will be ready at http://localhost:4000/graphql
 
-7. Server offers playground as way to interact with it's API
-It is loaded with example queries that can be used to access data.
-To to playground and execute GraphQL queries - createTask, updateTask etc.
+7. Server offers playground as way to interact with it's API.
+It is loaded with example queries that can be used to access data
+through playground and execute GraphQL queries - createTask, updateTask etc.
 
 ### 2) Bulding Your first GraphQL Client with React, GraphQL and AeroGear DataSync
 
