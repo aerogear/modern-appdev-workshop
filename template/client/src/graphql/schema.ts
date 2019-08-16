@@ -5,4 +5,5 @@ export const schema = `
   }
     # This is required by buildASTSchema
     type Query { anything: ID }
-`;
+`
+

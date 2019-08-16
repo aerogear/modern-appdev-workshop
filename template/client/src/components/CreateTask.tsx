@@ -1,40 +1,39 @@
-import { CacheOperation, createOptimisticResponse, getUpdateFunction } from '@aerogear/voyager-client';
-import { useMutation } from '@apollo/react-hooks';
+import { CacheOperation, createOptimisticResponse, getUpdateFunction, OfflineClient } from '@aerogear/voyager-client';
+import { useMutation } from '@apollo/react-hooks'
 import React from 'react';
 import { AutoFields, AutoForm, ErrorsField, SubmitField } from 'uniforms-semantic';
 import { TaskSchema } from '../graphql/GraphQLBridge';
 import { TaskMutation } from '../graphql/mutations/TaskMutation';
 import { TaskQuery } from '../graphql/queries/Tasks';
+import { useSyncClient } from '../helpers/useDataSyncClient';
 
 export const CreateTask: React.FC = () => {
-    const [createTaskMutation, { data }] = useMutation(TaskMutation, {
-        context: { returnType: "Task" }
-    });
-
-    const updateFunction = getUpdateFunction({
-        mutationName: 'createTask',
-        updateQuery: TaskQuery
-    });
+    const { offlineMutate } = useSyncClient();
 
     return (
         <AutoForm schema={TaskSchema} onSubmit={(doc: any) =>
-            createTaskMutation({
-                variables: doc,
-                // refetchQueries: TaskQuery,
-                context: { returnType: "Task", updateFunction: updateFunction },
+            offlineMutate({
+                mutation: TaskMutation,
+                updateQuery: TaskQuery,
                 optimisticResponse: createOptimisticResponse({
                     mutation: TaskMutation,
                     variables: { ...doc, version: 1, status: "OPEN" },
                     operationType: CacheOperation.ADD,
                     returnType: "Task"
                 }),
-                update: updateFunction
+                variables: doc,
+                returnType: "Task",
+            }).then(() => {
+                // Cache is updated so no action here
             }).catch((error) => {
-                    if (error.networkError && error.networkError.offline) {
-                        console.log("Change is offline")
-                    }
-                    console.log(error);
-                })} >
+                if (error.networkError && error.networkError.offline) {
+                    error.networkError.watchOfflineChange().then(() => {
+                        console.log("Change was replicated to server")
+                    });
+                    console.log("Change enqueued for offline")
+                }
+                console.log(error);
+            })} >
             <AutoFields />
             <ErrorsField />
             <SubmitField />
