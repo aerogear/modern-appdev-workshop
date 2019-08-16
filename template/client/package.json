@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aerogear/app": "^2.6.2",
+    "@aerogear/auth": "^2.6.2",
     "@aerogear/voyager-client": "^2.6.2",
     "@apollo/react-hooks": "^3.0.0",
     "@types/graphql": "^14.2.3",
@@ -16,6 +18,7 @@
     "react": "^16.9.0",
     "react-apollo": "^3.0.0",
     "react-dom": "^16.9.0",
+    "react-keycloak": "^6.1.0",
     "react-scripts": "3.1.1",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.87.3",
