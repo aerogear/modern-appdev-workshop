@@ -8,7 +8,7 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import { KeycloakProvider } from 'react-keycloak';
 
-import { init, AeroGearApp } from '@aerogear/app';
+import { init } from '@aerogear/app';
 import { Auth } from '@aerogear/auth';
 
 import mobileConfig from './mobile-services.json'

@@ -14,7 +14,6 @@ export const createClient = (auth: Auth) => {
 
     if (auth) {
         authLink = setContext(async (operation, prevContext) => {
-            console.log('auth context provider function calleed')
             const authContextProvider = auth.getAuthContextProvider()
             const authContext = await authContextProvider()
             return authContext
@@ -22,10 +21,8 @@ export const createClient = (auth: Auth) => {
     }
 
     if (authLink) {
-        console.log('auth link')
         terminatingLink = authLink.concat(httpLink)
     } else {
-        console.log('using http link')
         terminatingLink = httpLink
     }
 
