@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aerogear/app": "^2.6.2",
+    "@aerogear/auth": "^2.6.2",
     "@aerogear/voyager-client": "^2.6.2",
     "@apollo/react-hooks": "^3.0.0",
     "@types/graphql": "^14.2.3",
@@ -12,6 +14,7 @@
     "@types/react-dom": "16.8.5",
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
+    "offix-client": "^0.8.2",
     "react": "^16.9.0",
     "react-apollo": "^3.0.0",
     "react-dom": "^16.9.0",
