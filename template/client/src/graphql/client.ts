@@ -15,8 +15,8 @@ export const createClient = (auth: Auth) => {
     if (auth) {
         authLink = setContext(async (operation, prevContext) => {
             console.log('auth context provider function calleed')
-            const authContext = await auth.getAuthContextProvider()
-            console.log('authContext', authContext)
+            const authContextProvider = auth.getAuthContextProvider()
+            const authContext = await authContextProvider()
             return authContext
         });
     }
