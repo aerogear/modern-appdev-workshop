@@ -16,7 +16,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task, onTaskAssign }) => {
   return (
     <List.Item>
       <List.Content floated='right'>
-        <Checkbox toggle onChange={onToggle} />
+        <Checkbox checked={task.status !== "open"} toggle onChange={onToggle}  />
       </List.Content>
       <List.Header >{task.title}</List.Header>
       <List.Description> {task.description} [v{task.version}]</List.Description>
