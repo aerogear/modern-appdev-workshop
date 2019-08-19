@@ -69,22 +69,27 @@ In cmd please answer questions as follows:
 cd node-workshop
 ```
 
-2. Review the `Task.graphql` file inside `model` with your GraphQL types.
+4. Review the `Task.graphql` file inside `model` with your GraphQL types.
 This file was added as part of the template. GraphBack allows you to 
 provide your own business logic, but for this example we going use predefined 
 one.
 
-3. Run `graphback generate` to generate schema and resolvers
+5. Open `config.json` in the root of the directory and enable the `subCreate` flag.
+```
+ "subCreate": true,
+```
 
-4. Run `docker-compose up -d` to run your database
+6. Run `graphback generate` to generate schema and resolvers
+
+7. Run `docker-compose up -d` to run your database
    and `graphback db` to create database resources in postgres
 
-5. Run `graphback watch` to start the server and watch for changes
+8. Run `graphback watch` to start the server and watch for changes
    in model.
 
-6. Server will be ready at http://localhost:4000/graphql
+9. Server will be ready at http://localhost:4000/graphql
 
-7. Server offers playground as way to interact with it's API.
+10. Server offers playground as way to interact with it's API.
 It is loaded with example queries that can be used to access data
 through playground and execute GraphQL queries - createTask, updateTask etc.
 
