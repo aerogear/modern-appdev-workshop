@@ -21,8 +21,9 @@ export const taskAssignment = (offlineMutate: any) => {
     //                 console.log("Change was replicated to server")
     //             });
     //             console.log("Change enqueued for offline")
+    //         } else {
+    //             console.log(error);
     //         }
-    //         console.log(error);
     //     })
     // }
     // return assignTask;

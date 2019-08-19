@@ -30,8 +30,9 @@ export const CreateTask: React.FC = () => {
                         console.log("Change was replicated to server")
                     });
                     console.log("Change enqueued for offline")
+                } else {
+                    console.log(error);
                 }
-                console.log(error);
             })} >
             <AutoFields />
             <ErrorsField />
