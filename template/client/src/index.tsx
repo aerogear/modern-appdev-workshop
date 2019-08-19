@@ -6,26 +6,17 @@ import App from './App';
 import { createClient } from "./graphql/client";
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import { KeycloakProvider } from 'react-keycloak';
-
-import { init } from '@aerogear/app';
-import { Auth } from '@aerogear/auth';
-
-import mobileConfig from './mobile-services.json'
-import { AeroGearConfiguration, ConfigurationService } from "@aerogear/core";
-
-const app = init(mobileConfig as unknown as AeroGearConfiguration)
-const auth = new Auth(app.config as ConfigurationService)
+import { auth, withAuth } from './services/auth.service'
 
 // tslint:disable-next-line: no-floating-promises
 createClient(auth).then((client) => {
     ReactDOM.render(
         //@ts-ignore
-        <KeycloakProvider keycloak={auth.extract()} initConfig={{ onLoad: 'login-required' }}>
-            <ApolloProvider client={client as any}>
+        withAuth(
+            <ApolloProvider client={client}>
                 <App />
             </ApolloProvider>
-        </KeycloakProvider>
+        )
         , document.getElementById('root'));
 })
 
