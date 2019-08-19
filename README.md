@@ -79,8 +79,7 @@ Open `config.json` in the root of the directory and enable the `subCreate` flag.
 ```
  "subCreate": true,
 ```
-This flag is used to tell graphback that we would like to generate the Subscriptions.
-This particular flag generates them only when a schema type is created.
+This flag is used to tell graphback that we would like to generate the Subscriptions, particularly when a schema type is created.
 
 6. Run `graphback generate` to generate schema and resolvers
 
