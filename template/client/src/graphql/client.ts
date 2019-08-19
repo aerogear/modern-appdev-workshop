@@ -7,7 +7,6 @@ export const createClient = (auth: Auth, app: AeroGearApp) => {
     const config: DataSyncConfig = {
         httpUrl: "http://localhost:4000/graphql",
         wsUrl: "ws://localhost:4000/graphql",
-        authContextProvider: auth.getAuthContextProvider(),
         openShiftConfig: app.config,
         offlineQueueListener: {
             onOperationEnqueued: () => {
@@ -25,7 +24,9 @@ export const createClient = (auth: Auth, app: AeroGearApp) => {
                 console.log("Conflict resolved")
             }
         }
-
+    }
+    if (auth) {
+        config.authContextProvider = auth.getAuthContextProvider();
     }
 
     const client = new OfflineClient(config);

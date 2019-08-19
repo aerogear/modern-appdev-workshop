@@ -1,3 +1,5 @@
+import { init } from '@aerogear/app';
+import { AeroGearConfiguration, ConfigurationService } from "@aerogear/core";
 import { ApolloProvider } from "@apollo/react-hooks"
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -5,18 +7,22 @@ import 'semantic-ui-css/semantic.min.css'
 import App from './App';
 import { createClient } from "./graphql/client";
 import './index.css';
-import * as serviceWorker from './serviceWorker';
 import { auth, withAuth } from './services/auth.service'
+import * as serviceWorker from './serviceWorker';
+
+
+import mobileConfig from './mobile-services.json'
+const appConfig = init(mobileConfig as unknown as AeroGearConfiguration)
 
 // tslint:disable-next-line: no-floating-promises
-createClient(auth, app).then((client) => {
+createClient(auth, appConfig).then((client) => {
     ReactDOM.render(
-        //@ts-ignore
+        // @ts-ignore
         withAuth(
             <ApolloProvider client={client}>
                 <App />
             </ApolloProvider>
-        )
+        , appConfig)
         , document.getElementById('root'));
 })
 
