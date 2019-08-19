@@ -1,5 +1,4 @@
-import { CacheOperation, createOptimisticResponse, getUpdateFunction, OfflineClient } from '@aerogear/voyager-client';
-import { useMutation } from '@apollo/react-hooks'
+import { CacheOperation, createOptimisticResponse } from '@aerogear/voyager-client';
 import React from 'react';
 import { AutoFields, AutoForm, ErrorsField, SubmitField } from 'uniforms-semantic';
 import { TaskSchema } from '../graphql/GraphQLBridge';

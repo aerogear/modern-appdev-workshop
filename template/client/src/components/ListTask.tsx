@@ -4,11 +4,16 @@ import React from 'react';
 import { List } from 'semantic-ui-react'
 import { TaskQuery } from '../graphql/queries/Tasks';
 import { TaskCreateSubscription } from '../graphql/subscriptions/NewTask';
+import { TaskItem } from './TaskItem';
+import { useSyncClient } from '../helpers/useDataSyncClient';
+import { AssignTaskMutation } from '../graphql/mutations/TaskMutation';
 
 export const Tasks: React.FC = () => {
     const { loading, error, data, subscribeToMore } = useQuery(TaskQuery, {
         fetchPolicy: "cache-and-network"
     })
+
+    const { offlineMutate } = useSyncClient()
 
     initSubscription(subscribeToMore);
 
@@ -18,20 +23,29 @@ export const Tasks: React.FC = () => {
 
     console.log("Data from server", data.findAllTasks);
 
-    const renderTaskItems = (data) => {
-        return data.findAllTasks.map((item) => (
-            <List.Item>
-                <List.Content>
-                    <List.Header >{item.title}</List.Header>
-                    <List.Description> {item.description}</List.Description>
-                </List.Content>
-            </List.Item >
-        ))
-    }
+    const assignTask = (id: string, status: string) => {
+        console.log('assign task', status)
+        offlineMutate({
+          mutation: AssignTaskMutation,
+          updateQuery: TaskQuery,
+          variables: { id, status },
+          returnType: "Task",
+        }).then(() => {
+          // Cache is updated so no action here
+        }).catch((error) => {
+          if (error.networkError && error.networkError.offline) {
+              error.networkError.watchOfflineChange().then(() => {
+                  console.log("Change was replicated to server")
+              });
+              console.log("Change enqueued for offline")
+          }
+          console.log(error);
+        })
+      }
 
     return (
-        <List>
-            {renderTaskItems(data)}
+        <List divided relaxed="very">
+            {data.findAllTasks.map((task) => (<TaskItem task={task} onTaskAssign={assignTask} key={task.id} />))}
         </List>
     );
 }
