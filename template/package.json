@@ -12,6 +12,7 @@
   },
   "license": "Apache 2.0",
   "dependencies": {
+    "@aerogear/voyager-conflicts": "^0.7.1",
     "@aerogear/voyager-server": "^0.7.1",
     "@aerogear/voyager-subscriptions": "^0.7.1",
     "apollo-server": "^2.8.1",

@@ -1,6 +1,7 @@
 ## apollo-rest-starter
 
-Starter template using graphback and apollo-server, Uses sofa-api to allow users use REST with GraphQL.
+Starter template using graphback and AeroGear technologies, 
+Uses sofa-api to allow users use RESTfull api with GraphQL.
 
 ### Usage
 The project has been created using `graphback`. Run the project using the following steps. 
