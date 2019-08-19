@@ -1,24 +1,16 @@
-import { useQuery, useSubscription } from '@apollo/react-hooks';
+import { CacheOperation, createSubscriptionOptions } from '@aerogear/voyager-client';
+import { useQuery } from '@apollo/react-hooks';
 import React from 'react';
 import { List } from 'semantic-ui-react'
 import { TaskQuery } from '../graphql/queries/Tasks';
 import { TaskCreateSubscription } from '../graphql/subscriptions/NewTask';
-import { createSubscriptionOptions, CacheOperation } from '@aerogear/voyager-client';
 
 export const Tasks: React.FC = () => {
-    useQuery(TaskQuery, {
-        fetchPolicy: "network-only"
-    })
     const { loading, error, data, subscribeToMore } = useQuery(TaskQuery, {
-        fetchPolicy: "cache-first"
+        fetchPolicy: "cache-and-network"
     })
-    // const options = {
-    //     subscriptionQuery: TaskCreateSubscription,
-    //     cacheUpdateQuery: TaskQuery,
-    //     operationType: CacheOperation.ADD
-    // }
-    // const subOptions = createSubscriptionOptions(options);
-    // subscribeToMore(subOptions)
+
+    initSubscription(subscribeToMore);
 
     if (loading) { return <p>Loading...</p>; }
     if (error) { return <p>Error :(</p>; }
@@ -26,14 +18,32 @@ export const Tasks: React.FC = () => {
 
     console.log("Data from server", data.findAllTasks);
 
-    return data.findAllTasks.map(({ title, description }) => (
-        <List>
-            <List.Item >
+    const renderTaskItems = (data) => {
+        return data.findAllTasks.map((item) => (
+            <List.Item>
                 <List.Content>
-                    <List.Header >{title}</List.Header>
-                    <List.Description> {description}</List.Description>
+                    <List.Header >{item.title}</List.Header>
+                    <List.Description> {item.description}</List.Description>
                 </List.Content>
-            </List.Item>
+            </List.Item >
+        ))
+    }
+
+    return (
+        <List>
+            {renderTaskItems(data)}
         </List>
-    ));
+    );
 }
+
+
+function initSubscription(subscribeToMore) {
+    const options = {
+        subscriptionQuery: TaskCreateSubscription,
+        cacheUpdateQuery: TaskQuery,
+        operationType: CacheOperation.ADD
+    };
+    const subOptions = createSubscriptionOptions(options);
+    subscribeToMore(subOptions);
+}
+

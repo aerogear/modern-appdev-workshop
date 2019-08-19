@@ -9,7 +9,7 @@ import * as serviceWorker from './serviceWorker';
 import { auth, withAuth } from './services/auth.service'
 
 // tslint:disable-next-line: no-floating-promises
-createClient(auth).then((client) => {
+createClient(auth, app).then((client) => {
     ReactDOM.render(
         //@ts-ignore
         withAuth(
