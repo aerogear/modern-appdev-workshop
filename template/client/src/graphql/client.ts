@@ -4,9 +4,16 @@ import { AeroGearApp } from '@aerogear/app';
 
 export const createClient = (auth: Auth, app: AeroGearApp) => {
 
+    const syncConfigs = app.config && app.config.getConfigByType('sync-app')
+
+    const syncConfig = (syncConfigs && syncConfigs.length > 0) ? syncConfigs[0] : undefined
+
+    const httpUrl = syncConfig && syncConfig.url ? syncConfig.url : "http://localhost:4000/graphql"
+    const wsUrl = syncConfig && syncConfig.config.websocketUrl ? syncConfig.config.websocketUrl : "ws://localhost:4000/graphql"
+
     const config: DataSyncConfig = {
-        httpUrl: "http://localhost:4000/graphql",
-        wsUrl: "ws://localhost:4000/graphql",
+        httpUrl,
+        wsUrl,
         openShiftConfig: app.config,
         offlineQueueListener: {
             onOperationEnqueued: () => {

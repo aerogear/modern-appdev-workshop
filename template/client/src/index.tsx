@@ -12,17 +12,17 @@ import * as serviceWorker from './serviceWorker';
 
 
 import mobileConfig from './mobile-services.json'
-const appConfig = init(mobileConfig as unknown as AeroGearConfiguration)
+const app = init(mobileConfig as unknown as AeroGearConfiguration)
 
 // tslint:disable-next-line: no-floating-promises
-createClient(auth, appConfig).then((client) => {
+createClient(auth, app).then((client) => {
     ReactDOM.render(
         // @ts-ignore
         withAuth(
             <ApolloProvider client={client}>
                 <App />
             </ApolloProvider>
-        , appConfig)
+        , app)
         , document.getElementById('root'));
 })
 
