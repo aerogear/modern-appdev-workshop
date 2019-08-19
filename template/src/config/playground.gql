@@ -24,4 +24,8 @@ mutation updateTask {
   }
 }
 
-
+subscription newTask {
+  newTask {
+    ...TaskFields
+  }
+}
