@@ -74,10 +74,13 @@ This file was added as part of the template. GraphBack allows you to
 provide your own business logic, but for this example we going use predefined 
 one.
 
-5. Open `config.json` in the root of the directory and enable the `subCreate` flag.
+5. Subscriptions are used in GraphQL to enable live updates of information. Graphback can help with subscriptions.
+Open `config.json` in the root of the directory and enable the `subCreate` flag.
 ```
  "subCreate": true,
 ```
+This flag is used to tell graphback that we would like to generate the Subscriptions.
+This particular flag generates them only when a schema type is created.
 
 6. Run `graphback generate` to generate schema and resolvers
 
