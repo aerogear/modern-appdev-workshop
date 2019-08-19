@@ -2,7 +2,7 @@ import { DataSyncConfig, OfflineClient } from '@aerogear/voyager-client';
 import { Auth } from '@aerogear/auth';
 import { AeroGearApp } from '@aerogear/app';
 
-export const createClient = (auth: Auth, app: AeroGearApp) => {
+export const createClient = (auth: Auth | undefined, app: AeroGearApp) => {
 
     const syncConfigs = app.config && app.config.getConfigByType('sync-app')
 
