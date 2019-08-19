@@ -10,3 +10,13 @@ mutation createTask($title: String!, $description: String) {
 
 ${TaskFragment}
 `
+
+export const AssignTaskMutation = gql`
+mutation assign($id: ID, $status: String!) {
+  assign(id: $id, status: $status) {
+    ...TaskFields
+  }
+}
+
+${TaskFragment}
+`
