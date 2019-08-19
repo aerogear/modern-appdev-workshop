@@ -10,16 +10,16 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task, onTaskAssign }) => {
 
   const onToggle = (_: any, { checked }: { checked?: boolean }) => {
     const status = checked === true ? 'assigned' : 'open'
-    onTaskAssign(task.id, status)
+    onTaskAssign(task.id, status, task.version)
   }
 
   return (
     <List.Item>
-      <List.Content>
-        <List.Header >{task.title}</List.Header>
-        <List.Description> {task.description}</List.Description>
-        <Checkbox toggle label="Task is assigned" onChange={onToggle}/>
+      <List.Content floated='right'>
+        <Checkbox toggle onChange={onToggle} />
       </List.Content>
+      <List.Header >{task.title}</List.Header>
+      <List.Description> {task.description} [v{task.version}]</List.Description>
     </List.Item >
   )
-}
+};

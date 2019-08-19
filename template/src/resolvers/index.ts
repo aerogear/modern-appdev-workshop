@@ -1,3 +1,5 @@
 import { taskResolvers } from './generated/task'
 
-export const resolvers = [taskResolvers]
+import { customResolvers } from './custom'
+
+export const resolvers = [taskResolvers, ...customResolvers]

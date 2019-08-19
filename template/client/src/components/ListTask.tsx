@@ -4,9 +4,9 @@ import React from 'react';
 import { List } from 'semantic-ui-react'
 import { TaskQuery } from '../graphql/queries/Tasks';
 import { TaskCreateSubscription } from '../graphql/subscriptions/NewTask';
-import { TaskItem } from './TaskItem';
 import { useSyncClient } from '../helpers/useDataSyncClient';
-import { AssignTaskMutation } from '../graphql/mutations/TaskMutation';
+import { taskAssignment } from './AssignTask';
+import { TaskItem } from './TaskItem';
 
 export const Tasks: React.FC = () => {
     const { loading, error, data, subscribeToMore } = useQuery(TaskQuery, {
@@ -23,29 +23,11 @@ export const Tasks: React.FC = () => {
 
     console.log("Data from server", data.findAllTasks);
 
-    const assignTask = (id: string, status: string) => {
-        console.log('assign task', status)
-        offlineMutate({
-          mutation: AssignTaskMutation,
-          updateQuery: TaskQuery,
-          variables: { id, status },
-          returnType: "Task",
-        }).then(() => {
-          // Cache is updated so no action here
-        }).catch((error) => {
-          if (error.networkError && error.networkError.offline) {
-              error.networkError.watchOfflineChange().then(() => {
-                  console.log("Change was replicated to server")
-              });
-              console.log("Change enqueued for offline")
-          }
-          console.log(error);
-        })
-      }
-
     return (
-        <List divided relaxed="very">
-            {data.findAllTasks.map((task) => (<TaskItem task={task} onTaskAssign={assignTask} key={task.id} />))}
+        <List divided selection verticalAlign='middle' relaxed="very">
+            {data.findAllTasks.map((task) => (
+                <TaskItem task={task} onTaskAssign={taskAssignment(offlineMutate)} key={task.id} />
+            ))}
         </List>
     );
 }
