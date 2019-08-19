@@ -28,11 +28,11 @@ This workshop focused on deploying fully functional web application server using
 
 Workshop was divided into following sections:
 
-A) Creating Server side using Graphback client
-B) Reviewing React Based client implementation
-C) Implementing offline support and conflict handling for client and server
-D) Building your first container and provisioning application to OpenShift
-E) Configuring Authentication using MDC
+- A) Creating Server side using Graphback client
+- B) Reviewing React Based client implementation
+- C) Implementing offline support and conflict handling for client and server
+- D) Building your first container and provisioning application to OpenShift
+- E) Configuring Authentication using MDC
 
 ## Prerequisites
 
