@@ -9,18 +9,18 @@ const LoadingComponent = () => <h2>Loading...</h2>
 
 let auth
 
-export const withAuth = (children: ReactNode, app: AeroGearApp) => {
-    if (!app.config) {
-        return children
-    }
-    const appConfig: ConfigurationService = app.config;
-    const authConfig = appConfig.getConfigByType(Auth.TYPE) as ServiceConfiguration[]
+export const getAuth = (app: AeroGearApp): Auth | undefined => {
+    const appConfig = app.config as ConfigurationService;
+    const authConfig = appConfig.getConfigByType(Auth.TYPE) as ServiceConfiguration[];
 
-    let auth
     if (authConfig.length > 0) {
         auth = new Auth(appConfig)
+        return auth
     }
+}
 
+
+export const withAuth = (children: ReactNode) => {
     if (auth) {
         return (
             <KeycloakProvider keycloak={auth.extract()} initConfig={{ onLoad: 'login-required' }} LoadingComponent={LoadingComponent()}>
@@ -30,5 +30,3 @@ export const withAuth = (children: ReactNode, app: AeroGearApp) => {
     }
     return children
 }
-
-export { auth }

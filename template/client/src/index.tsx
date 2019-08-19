@@ -7,12 +7,13 @@ import 'semantic-ui-css/semantic.min.css'
 import App from './App';
 import { createClient } from "./graphql/client";
 import './index.css';
-import { auth, withAuth } from './services/auth.service'
+import { getAuth, withAuth } from './services/auth.service'
 import * as serviceWorker from './serviceWorker';
 
 
 import mobileConfig from './mobile-services.json'
 const app = init(mobileConfig as unknown as AeroGearConfiguration)
+const auth = getAuth(app)
 
 // tslint:disable-next-line: no-floating-promises
 createClient(auth, app).then((client) => {
@@ -22,8 +23,7 @@ createClient(auth, app).then((client) => {
             <ApolloProvider client={client}>
                 <App />
             </ApolloProvider>
-        , app)
-        , document.getElementById('root'));
+        ), document.getElementById('root'));
 })
 
 
