@@ -18,17 +18,25 @@ export const Tasks: React.FC = () => {
 
     console.log("Data from server", data.findAllTasks);
 
-    return data.findAllTasks.map(({ title, description }) => (
-        <List>
-            <List.Item >
+    const renderTaskItems = (data) => {
+        return data.findAllTasks.map((item) => (
+            <List.Item>
                 <List.Content>
-                    <List.Header >{title}</List.Header>
-                    <List.Description> {description}</List.Description>
+                    <List.Header >{item.title}</List.Header>
+                    <List.Description> {item.description}</List.Description>
                 </List.Content>
-            </List.Item>
+            </List.Item >
+        ))
+    }
+
+    return (
+        <List>
+            {renderTaskItems(data)}
         </List>
-    ));
+    );
 }
+
+
 function initSubscription(subscribeToMore) {
     const options = {
         subscriptionQuery: TaskCreateSubscription,
