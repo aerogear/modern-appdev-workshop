@@ -33,6 +33,8 @@ The workshop is divided into the following sections:
 - C) Implementing offline support and conflict handling for client and server
 - D) Building your first container and provisioning application to OpenShift
 - E) Configuring Authentication using MDC
+- F) Binding the Server to Your App Using the Mobile Developer Console
+- G) Enabling Auth Service (Keycloak) in the Application.
 
 ## Prerequisites
 
@@ -203,7 +205,7 @@ docker push <dockerhubusername>/<imagename>:latest
 oc process -f openshift-template.yml --param APPLICATION_IMAGE=<dockerhubusername>/<imagename>:latest | oc create -f -
 ```
 
-## 4) Creating an Application in The Mobile Developer Console
+## E) Creating an Application in The Mobile Developer Console
 
 The Mobile Developer Console (MDC) simplifies and bootstraps mobile application development on OpenShift by making it simple to provision and bind Mobile Services to your Application. Let's create a representation of our Application in the MDC.
 
@@ -216,7 +218,7 @@ Once the application is created, you can click on it to bring you to a new overv
 
 ![Mobile App Overview in MDC](./doc/img/mdc-config-tab.png)
 
-## 4) Binding the Server to Your App Using the Mobile Developer Console
+## F) Binding the Server to Your App Using the Mobile Developer Console
 
 Let's use the MDC to bind to the server deployed in the previous step. This will provide our application with the configuration needed to talk to the server provisioned in OpenShift instead of one running locally.
 
@@ -239,7 +241,7 @@ You should notice this time when the application restarts that any Task items pr
 
 ![Requests in Chrome Dev Tools](./doc/img/dev-tools-server-openshift.png)
 
-## 4) Enabling Auth Service (Keycloak) in the Application.
+## G) Enabling Auth Service (Keycloak) in the Application.
 
 Let's add a keycloak integration to our react application. We can do this by binding the Identity Management Service from the MDC. When we create a binding for the Identity Management Service, a new Keycloak realm is created specifically for our application and a starter public client is created with some default values that allow logins from web / cordova applications.
 
