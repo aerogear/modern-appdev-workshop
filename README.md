@@ -7,17 +7,17 @@ AeroGear and Mobile Developer service technologies
 
 This tutorial is backed by https://github.com/aerogear/modern-appdev-workshop github repository.
 
-This repository is designed to be working as template for `graphback` command line client.
+This repository contains a template application for the [`graphback`](https://www.npmjs.com/package/graphback) command line client.
 
-`./template` folder will contain graphback server template used to initialize project.
-`./template/client` contains react application that can be used to contact server
+`./template` contains a graphback server template used to initialize the project.
+`./template/client` contains a react application (`create-react-app`) used to contact the server.
 
-When using `graphback` template will be instantiated as your own project with:
+When using `graphback`, the template will be instantiated as your own project with:
 
-- `/` will contain server side code
-- `./client` will contain client side code we created using `create-react-app` 
+- `/` will contain the server side code.
+- `./client` will contain the client side code.
 
-Please refer to `completed` branch for finished version of this tutorial.
+Please refer to the `completed` branch for finished version of this tutorial.
 
 ## Introduction
 
@@ -28,13 +28,13 @@ This workshop is focused on deploying a fully functional web application server 
 
 The workshop is divided into the following sections:
 
-- A) Creating Server side using Graphback client
-- B) Reviewing React Based client implementation
-- C) Implementing offline support and conflict handling for client and server
-- D) Building your first container and provisioning application to OpenShift
-- E) Configuring Authentication using MDC
-- F) Binding the Server to Your App Using the Mobile Developer Console
-- G) Enabling Auth Service (Keycloak) in the Application.
+1. Bulding your first GraphQL server using AeroGear Graphback
+2. Bulding Your first GraphQL Client with React, GraphQL and AeroGear DataSync
+3. Implementing Offline support and Conflict resolution in your applications
+4. Deployment to OpenShift
+5. Creating an Application in The Mobile Developer Console
+6. Binding the Server to Your App Using the Mobile Developer Console
+7. Enabling Auth Service (Keycloak) in the Application.
 
 ## Prerequisites
 
@@ -42,26 +42,24 @@ The workshop is divided into the following sections:
 - Docker and docker-compose
 - Visual Studio Code (or other IDE)
 
-## Workshop Steps
+## 1. Bulding your first GraphQL server using AeroGear Graphback
 
-### A) Bulding your first GraphQL server using AeroGear GraphBack
-
-Graphback command line tool (https://graphback.dev) allows developers 
-to generate fully functional Node.js based server that will be offering 
-GraphQL and RESTfull API out of the box based on developer provided business model.
-Graphback generates general data access methods like find, create, delete etc. along with 
+The Graphback cli tool (https://graphback.dev) allows developers 
+to generate a fully functional Node.js based server offering
+GraphQL and RESTful APIs out of the box based on developer provided business model.
+Graphback generatesb the general data access methods like find, create, delete etc. along with 
 live updates called subscriptions.
 
 In this chapter we are going to build a sample Task application that will
-be based on custom server template we have provided.
+be based on the custom server template we have provided.
 
-Example server contains following technologies:
+The example server contains the following technologies:
 
-- AeroGear Voyager Server (including audit log, etrics and keycloak integration)
-- Postgres database
+- AeroGear Voyager Server (including audit log, metrics and keycloak integration)
+- PostgreSQL database
 - Apollo GraphQL server (Express.js based)
 
-#### Steps
+### Steps
 
 1. Install graphback client
 ```
@@ -82,11 +80,11 @@ cd node-workshop
 ```
 4. Review the `Task.graphql` file inside `model` with your GraphQL types.
 This file was added as part of the template. GraphBack allows you to 
-provide your own business logic, but for this example we going use one that
+provide your own business logic, but for this example we will use logic that
 was provided as part of the template. 
 We can extend it later as part of the hackaton.
 
-5. Subscriptions are used in GraphQL to enable live updates of information. Graphback can help with subscriptions.
+5. Subscriptions are used in GraphQL to enable live updates of data. Graphback can help with subscriptions.
 Open `config.json` in the root of the directory and enable the `subCreate` flag.
 ```
  "subCreate": true,
@@ -99,27 +97,25 @@ This flag is used to tell graphback that we would like to generate the Subscript
 
 8. Run `npm run start` to start the server
 
-9. Server will be ready at http://localhost:4000/graphql
+9. The server will be ready at http://localhost:4000/graphql
 
-10. Server offers the playground as way to interact with its API.
-It is loaded with example queries that can be used to access data
-through the playground and execute GraphQL queries - createTask, updateTask etc.
+10. The server offers the playground as a way to interact with its API.
+It is loaded with example queries that can be used to access data and execute GraphQL queries - createTask, updateTask etc.
 Please try to execute some operations directly in the server. 
 
-Playground will also offer documentation for all available operations that we can replicate back to server
+The Playground also offers documentation for all available operations that we can replicate back to server. This is automatically generated from the GraphQL Schema.
 
-### B) Bulding Your first GraphQL Client with React, GraphQL and AeroGear DataSync
+## 2. Bulding Your first GraphQL Client with React, GraphQL and AeroGear DataSync
 
-Server side template comes with client folder that will contain React.js 
-project boilerplate. We have initialized project using create-react-app
-and applied following projects
+The server side template has a `client` folder that contains a sample React project. 
+It was bootstrapped using `create-react-app` and has some additional technologies: 
 
 - React.js TypeScript template
 - *AeroGear Voyager Client* that will offer *Data Synchronization* and 
 *Conflict resolution*.
 - *Uniforms* - Library for building GraphQL forms based on GraphQL schema.
 
-#### Steps
+### Steps
 
 1. Navigate to `./client`
 2. Install required dependencies for the project
@@ -130,14 +126,13 @@ npm install
 ```
 npm run start 
 ```
-At this point we should see web application connecting with server and 
-using autogenerated api. Create Task operation is still not implemented.
-We going to focus on that in the next chapter of the tutorial
+At this point we should see the web application connecting with the server and 
+using the autogenerated api.
 
-### C) [Optional] Implementing Offline support and Conflict resolution in your applications
+## 3. [Optional] Implementing Offline support and Conflict resolution in your applications
 
-In this step we can use power of Graphback custom method generator together with the Conflict detection and resolution 
-capaibilities of the Voyager framework. We going to create custom GraphQL implementation for server that will ensure data consistency
+In this step we can use the power of Graphback custom method generator together with the Conflict detection and resolution 
+capaibilities of the Voyager framework. Let's create a custom GraphQL implementation for server that will ensure data consistency
 and then connect it with the client application.
 
 Voyager-server allows out of the box conflict resolution based on implementations - like `version` field marker in model, but for this use case 
@@ -171,15 +166,17 @@ the code responsible for sending mutation back to the server
 8. Now open the application and you should see version changing when 
 toggle is pressed.
 
-### D. Deployment to OpenShift
+## 4. Deployment to OpenShift
 
-#### Prerequisites
+### Prerequisites
 
 * Create an account on [Dockerhub](https://hub.docker.com/)
 
 An OpenShift template is provided to deploy the backend server on OpenShift.
 
-#### Steps
+NOTE: If you'd like to skip the docker build steps, you can go straight to step 4 and use the image `aergear/app-dev-workshop:latest`
+
+### Steps
 
 1. Log in to the Dockerhub Registry
 
@@ -190,7 +187,7 @@ docker login
 2. Build the application into a docker image.
 
 ```bash
-docker build -t <dockerhubusername>/<imagename>:latest . # ex: docker build -t aerogear/graphback-demo:latest .
+docker build -t <dockerhubusername>/<imagename>:latest . # ex: docker build -t aergear/app-dev-workshop:latest .
 ```
 
 3. Push the image to Dockerhub
@@ -205,9 +202,9 @@ docker push <dockerhubusername>/<imagename>:latest
 oc process -f openshift-template.yml --param APPLICATION_IMAGE=<dockerhubusername>/<imagename>:latest | oc create -f -
 ```
 
-## E) Creating an Application in The Mobile Developer Console
+## 5. Creating an Application in The Mobile Developer Console
 
-The Mobile Developer Console (MDC) simplifies and bootstraps mobile application development on OpenShift by making it simple to provision and bind Mobile Services to your Application. Let's create a representation of our Application in the MDC.
+The Mobile Developer Console (MDC) bootstraps mobile application development on OpenShift by making it simple to provision and bind Mobile Services to your Application. Let's create a representation of our Application in the MDC.
 
 1. Go to the MDC URL.
 2. Create a new Application in The MDC if you haven't already.
@@ -218,14 +215,14 @@ Once the application is created, you can click on it to bring you to a new overv
 
 ![Mobile App Overview in MDC](./doc/img/mdc-config-tab.png)
 
-## F) Binding the Server to Your App Using the Mobile Developer Console
+## 6. Binding the Server to Your App Using the Mobile Developer Console
 
 Let's use the MDC to bind to the server deployed in the previous step. This will provide our application with the configuration needed to talk to the server provisioned in OpenShift instead of one running locally.
 
-1. Select your Mobile App from the MDC
+1. Select your Mobile App from the MDC.
 2. Click the `Mobile Services` tab. This shows you a list of available services that can be bound to your app.
 3. Click the `Bind to App` button on the `Data Sync` service from the list.
-4. In the form, provide the public URL for your backend server.
+4. In the form, provide the public URL for your backend server. (You can find this with `oc get route` from within the project where you deployed the server.)
 
 ![Binding a Sync Server to Mobile App in MDC](./doc/img/sync-bind-form.png)
 
@@ -235,15 +232,15 @@ Let's use the MDC to bind to the server deployed in the previous step. This will
 ![mobile-services.json with Sync Config](./doc/img/mobile-services-with-sync.png)
 
 7. Copy the `mobile-services.json` into `client/src/mobile-services.json` in your local project.
-8. Restart your client application locally with `npm run start`
+8. Restart your client application locally with `npm run start`.
 
 You should notice this time when the application restarts that any Task items previously created are gone. This is because our app is now working against the server running in OpenShift. You can double check this by opening the network tab in Chrome Dev Tools (or the dev tools equivalent in other browsers), refreshing the page and inspecting the `graphql` requests being sent.
 
 ![Requests in Chrome Dev Tools](./doc/img/dev-tools-server-openshift.png)
 
-## G) Enabling Auth Service (Keycloak) in the Application.
+## 7. Enabling Auth Service (Keycloak) in the Application.
 
-Let's add a keycloak integration to our react application. We can do this by binding the Identity Management Service from the MDC. When we create a binding for the Identity Management Service, a new Keycloak realm is created specifically for our application and a starter public client is created with some default values that allow logins from web / cordova applications.
+Let's add a keycloak integration to our react application. We can do this by binding the Identity Management Service from the MDC. When we create a binding for the Identity Management Service, a new Keycloak realm is created specifically for our application and a starter public client is created with some default values that allow logins from web applications.
 
 1. Go to the `Mobile Services` tab in the MDC.
 2. Click the `Bind to App` button on the Identity Management Service.
@@ -258,7 +255,7 @@ Let's add a keycloak integration to our react application. We can do this by bin
 7. Copy the `mobile-services.json` into `client/src/mobile-services.json` in your local project.
 8. Restart your client application locally with `npm run start`
 
-This time when the application starts, you should be presented with a keycloak login screen. At this point, we need a username/password combination to log in. Let's quickly create one in the MDC.
+This time when the application starts, you should be presented with a keycloak login screen. At this point, we need a username/password combination to log in. Let's quickly create one in the Keycloak Console.
 
 1. Go to the `Configuration` tab in the MDC.
 2. Under the Bound Services section, expand the panel for the Identity Management Service. In there you will find the `Keycloak Realm Url`.
@@ -267,13 +264,13 @@ This time when the application starts, you should be presented with a keycloak l
 5. Click 'Add User'
 6. Fill out the username as `developer` and toggle the `Email Verified` option to true.
 7. Once the user is created, find the `Credentials` tab and set the user's password and toggle `Temporary` to `Off`.
-8. Go back to your application and log in using your new user.
+8. Go back to the react application and log in using the new user.
 
-At this point you should see the main screen of the application again. You can also check in Chrome Dev Tools (or the dev tools equivalent in other browsers) that the Keycloak Authorization header is included in the GraphQL requests being sent to the server. This can be used by the server to authenticate the requests when the keycloak integration is set up on the server side.
+At this point you should see the main screen of the application again. You can also check in Chrome Dev Tools (or the dev tools equivalent in other browsers) that the `Authorization` header is included in the GraphQL requests being sent to the server. This can be used by the server to authenticate the requests when the keycloak integration is set up on the server side.
 
 ![Requests in Dev Tools with Keycloak Auth](./doc/img/dev-tools-keycloak-auth.png)
 
-#### How it works
+### How it works
 
 The Application discovered the Keycloak specific config at startup and used it to enable the keycloak integration. This was done using a combination of the `@aerogear/auth` and `react-keycloak` modules.
 
