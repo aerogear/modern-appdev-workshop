@@ -1,0 +1,50 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@aerogear/app": "^2.6.2",
+    "@aerogear/auth": "^2.6.2",
+    "@aerogear/voyager-client": "^2.6.2",
+    "@apollo/react-hooks": "^3.0.0",
+    "@types/graphql": "^14.2.3",
+    "@types/jest": "24.0.17",
+    "@types/node": "12.7.1",
+    "@types/react": "16.9.1",
+    "@types/react-dom": "16.8.5",
+    "graphql": "^14.4.2",
+    "graphql-tag": "^2.10.1",
+    "react": "^16.9.0",
+    "react-apollo": "^3.0.0",
+    "react-dom": "^16.9.0",
+    "react-keycloak": "^6.1.0",
+    "react-scripts": "3.1.1",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^0.87.3",
+    "typescript": "3.5.3",
+    "uniforms": "^2.3.0",
+    "uniforms-bridge-graphql": "^2.3.0",
+    "uniforms-semantic": "^2.3.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

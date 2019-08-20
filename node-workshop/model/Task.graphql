@@ -1,0 +1,7 @@
+type Task {
+  id: ID!
+  title: String!
+  version: Int
+  description: String
+  status: String
+}

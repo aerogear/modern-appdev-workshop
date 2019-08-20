@@ -1,0 +1,23 @@
+import { ObjectConflictError } from "@aerogear/voyager-conflicts"
+import { GraphQLContext } from '../../context'
+
+export const assign = {
+  Mutation: {
+    assign: async (_: any, args: any, context: GraphQLContext) => {
+      // Update if latest
+      const rowsUpdated = await context.db('task').where('id', '=', args.id).andWhere('version', '=', args.version)
+        .update({ status: args.status, version: args.version + 1 });
+      const serverData = await context.db.select().from('task').where('id', '=', args.id);
+      
+      // Check if update happened
+      if (rowsUpdated === 0) {
+        // Return error
+        throw new ObjectConflictError({
+          clientState: args,
+          serverState: serverData[0]
+        });
+      }
+      return serverData[0];
+    }
+  }
+}
