@@ -83,15 +83,15 @@ cd node-workshop
 4. Review the `Task.graphql` file inside `model` with your GraphQL types.
 This file was added as part of the template. GraphBack allows you to 
 provide your own business logic, but for this example we will use logic that
-was provided as part of the template. 
-We can extend it later as part of the hackaton.
+was provided as part of the template. We can extend it at any point later.
 
-5. Subscriptions are used in GraphQL to enable live updates of data. Graphback can help with subscriptions.
+5. Subscriptions are used in GraphQL to enable recieving real time updates from server. 
+Graphback offers out of the box support for subscriptions providing updates for create, update and delete operations separately. For this workshop we going to consume only create 
 Open `config.json` in the root of the directory and enable the `subCreate` flag.
 ```
  "subCreate": true,
 ```
-This flag is used to tell graphback that we would like to generate the Subscriptions, particularly when a schema type is created.
+This flag is used to tell graphback that we would like to generate the Subscriptions, particularly when a items are created.
 
 6. Run `graphback generate` to generate schema and resolvers
 
@@ -102,10 +102,13 @@ This flag is used to tell graphback that we would like to generate the Subscript
 9. The server will be ready at http://localhost:4000/graphql
 
 10. The server offers the playground as a way to interact with its API.
-It is loaded with example queries that can be used to access data and execute GraphQL queries - createTask, updateTask etc.
-Please try to execute some operations directly in the server. 
+It is loaded with example queries that can be used to access data - createTask, updateTask etc.
+Please try to execute some operations directly using playground.
 
-The Playground also offers documentation for all available operations that we can replicate back to server. This is automatically generated from the GraphQL Schema.
+> Note: Please make any change in the playground editor first to see queries available when pressing big play button. 
+
+The Playground also offers documentation for all available operations that we can replicate back to server. 
+Documentation is automatically generated from the GraphQL Schema.
 
 ## 2. Building Your first GraphQL Client with React, GraphQL and AeroGear DataSync
 
