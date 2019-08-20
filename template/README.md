@@ -1,4 +1,4 @@
-## apollo-rest-starter
+## Ref. GraphBack Mobile Developer Services Template 
 
 Starter template using graphback and AeroGear technologies, 
 Uses sofa-api to allow users use RESTfull api with GraphQL.
