@@ -196,14 +196,13 @@ docker build -t <dockerhubusername>/<imagename>:latest . # ex: docker build -t a
 docker push <dockerhubusername>/<imagename>:latest
 ```
 4. Ask for OpenShift server url that can be used for deployment. 
-
 5. Login using your oc command line client
 ```bash 
 oc login
 ```
 6. Create new namespace that will be used to deploy this project. Use your own name to avoid clashes.
 ```bash 
-oc create -n '{your-name}-server'
+oc new-project {your-name}-server
 ```
 7. Create the OpenShift template in a namespace of your choice
 ```bash
