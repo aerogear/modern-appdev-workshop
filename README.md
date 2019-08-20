@@ -179,7 +179,7 @@ toggle is pressed.
 
 An OpenShift template is provided to deploy the backend server on OpenShift.
 
-NOTE: If you'd like to skip the docker build steps, you can go straight to step 4 and use the image `aergear/app-dev-workshop:latest`
+NOTE: If you'd like to skip the docker build steps, you can go straight to step 4 and use the image `aerogear/app-dev-workshop:latest`
 
 ### Steps
 
@@ -192,7 +192,7 @@ docker login
 2. Build the application into a docker image.
 
 ```bash
-docker build -t <dockerhubusername>/<imagename>:latest . # ex: docker build -t aergear/app-dev-workshop:latest .
+docker build -t <dockerhubusername>/<imagename>:latest . # ex: docker build -t aerogear/app-dev-workshop:latest .
 ```
 
 3. Push the image to Dockerhub
