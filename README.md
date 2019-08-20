@@ -105,7 +105,7 @@ Please try to execute some operations directly in the server.
 
 The Playground also offers documentation for all available operations that we can replicate back to server. This is automatically generated from the GraphQL Schema.
 
-## 2. Bulding Your first GraphQL Client with React, GraphQL and AeroGear DataSync
+## 2. Building Your first GraphQL Client with React, GraphQL and AeroGear DataSync
 
 The server side template has a `client` folder that contains a sample React project. 
 It was bootstrapped using `create-react-app` and has some additional technologies: 
