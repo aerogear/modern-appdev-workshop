@@ -1,3 +1,3 @@
+import { assign } from './assign'
 
-
-export const customResolvers = []
+export const customResolvers = [assign]

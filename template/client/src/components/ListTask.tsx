@@ -9,20 +9,21 @@ import { taskAssignment } from './AssignTask';
 import { TaskItem } from './TaskItem';
 
 export const Tasks: React.FC = () => {
+    const [subscribed, setSubscribed] = React.useState(false);
     const { loading, error, data, subscribeToMore } = useQuery(TaskQuery, {
         fetchPolicy: "cache-and-network"
     })
-
-    const { offlineMutate } = useSyncClient()
-
-    initSubscription(subscribeToMore);
+    if (subscribed) {
+        initSubscription(subscribeToMore);
+        setSubscribed(true)
+    }
 
     if (loading) { return <p>Loading...</p>; }
     if (error) { return <p>Error :(</p>; }
     if (!data || !data.findAllTasks) { return <p>No Data :(</p>; }
 
     console.log("Data from server", data.findAllTasks);
-
+    const { offlineMutate } = useSyncClient()
     return (
         <List divided selection verticalAlign='middle' relaxed="very">
             {data.findAllTasks.map((task) => (

@@ -5,3 +5,7 @@ type Task {
   description: String
   status: String
 }
+
+type Mutation {
+  assign(id: ID!, status: String!, version: Int!):Task
+}

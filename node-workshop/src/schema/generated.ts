@@ -32,6 +32,8 @@ export const typeDefs = gql`
   type Mutation {
     createTask(input: TaskInput!): Task!
     updateTask(id: ID!, input: TaskInput!): Task!
+    ## Custom mutations
+    assign(id: ID!, status: String!, version: Int!): Task
   }
 
   type Subscription {
