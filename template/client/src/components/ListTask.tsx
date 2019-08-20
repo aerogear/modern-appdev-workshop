@@ -9,14 +9,15 @@ import { taskAssignment } from './AssignTask';
 import { TaskItem } from './TaskItem';
 
 export const Tasks: React.FC = () => {
+    const [subscribed, setSubscribed] = React.useState(false);
     const { loading, error, data, subscribeToMore } = useQuery(TaskQuery, {
         fetchPolicy: "cache-and-network"
     })
-
+    if (subscribed) {
+        initSubscription(subscribeToMore);
+        setSubscribed(true)
+    }
     const { offlineMutate } = useSyncClient()
-
-    initSubscription(subscribeToMore);
-
     if (loading) { return <p>Loading...</p>; }
     if (error) { return <p>Error :(</p>; }
     if (!data || !data.findAllTasks) { return <p>No Data :(</p>; }
