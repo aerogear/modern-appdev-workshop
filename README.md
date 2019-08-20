@@ -184,25 +184,18 @@ NOTE: If you'd like to skip the docker build steps, you can go straight to step 
 ### Steps
 
 1. Log in to the Dockerhub Registry
-
 ```bash
 docker login
 ```
-
 2. Build the application into a docker image.
-
 ```bash
 docker build -t <dockerhubusername>/<imagename>:latest . # ex: docker build -t aerogear/app-dev-workshop:latest .
 ```
-
 3. Push the image to Dockerhub
-
 ```bash
 docker push <dockerhubusername>/<imagename>:latest
 ```
-
 4. Create the OpenShift template in a namespace of your choice
-
 ```bash
 oc process -f openshift-template.yml --param APPLICATION_IMAGE=<dockerhubusername>/<imagename>:latest | oc create -f -
 ```
