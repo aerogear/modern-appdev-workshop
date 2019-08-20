@@ -5,9 +5,9 @@ AeroGear and Mobile Developer service technologies
 
 ## General information
 
-This tutorial is backed by https://github.com/aerogear/modern-appdev-workshop github repository.
+This tutorial is backed by [aerogear/modern-appdev-workshop](https://github.com/aerogear/modern-appdev-workshop) github repository.
 
-This repository contains a template application for the [`graphback`](https://www.npmjs.com/package/graphback) command line client.
+This repository contains a template application for the [`graphback`](https://www.npmjs.com/package/graphback-cli) command line client.
 
 `./template` contains a graphback server template used to initialize the project.
 `./template/client` contains a react application (`create-react-app`) used to contact the server.
@@ -17,7 +17,7 @@ When using `graphback`, the template will be instantiated as your own project wi
 - `/` will contain the server side code.
 - `./client` will contain the client side code.
 
-Please refer to the `completed` branch for finished version of this tutorial.
+Please refer to the `completed` branch that contains finished version of this tutorial.
 
 ## Introduction
 
@@ -28,8 +28,8 @@ This workshop is focused on deploying a fully functional web application server 
 
 The workshop is divided into the following sections:
 
-1. Building your first GraphQL server using AeroGear Graphback
-2. Building your first GraphQL Client with React, GraphQL and AeroGear DataSync
+1. Bulding Your first GraphQL Server using AeroGear Graphback and AeroGear Voyager-Server
+2. Bulding Your first GraphQL Client with React, GraphQL and AeroGear DataSync
 3. Implementing Offline support and Conflict resolution in your applications
 4. Deployment to OpenShift
 5. Creating an Application in The Mobile Developer Console
@@ -44,18 +44,20 @@ The workshop is divided into the following sections:
 
 ## 1. Bulding your first GraphQL server using AeroGear Graphback
 
-The Graphback cli tool (https://graphback.dev) allows developers 
+The Graphback cli (https://graphback.dev) allows developers 
 to generate a fully functional Node.js based server offering
-GraphQL and RESTful APIs out of the box based on developer provided the business model.
+GraphQL and RESTful APIs out of the box based on developer provided business model.
 Graphback generates the general data access methods like find, create, delete etc. along with 
 live updates called subscriptions.
 
-In this chapter, we are going to build a sample Task application that will
-be based on the custom server template we have provided.
+In this chapter we are going to build a sample application that will
+be based on the custom server template we have provided. 
+We going to implement Task model, however we can introduce any changes into the schema 
+at later stage to show power of GraphQL and Graphback.
 
 The example server contains the following technologies:
 
-- AeroGear Voyager Server (including audit log, metrics, and keycloak integration)
+- AeroGear Voyager Server (including audit logging, metrics and keycloak integration)
 - PostgreSQL database
 - Apollo GraphQL server (Express.js based)
 
@@ -80,16 +82,16 @@ cd node-workshop
 ```
 4. Review the `Task.graphql` file inside `model` with your GraphQL types.
 This file was added as part of the template. GraphBack allows you to 
-provide your own business logic, but for this example, we will use the logic that
-was provided as part of the template. 
-We can extend it later as part of the hackathon.
+provide your own business logic, but for this example we will use logic that
+was provided as part of the template. We can extend it at any point later.
 
-5. Subscriptions are used in GraphQL to enable live updates of data. Graphback can help with subscriptions.
+5. Subscriptions are used in GraphQL to enable recieving real time updates from server. 
+Graphback offers out of the box support for subscriptions providing updates for create, update and delete operations separately. For this workshop we going to consume only create 
 Open `config.json` in the root of the directory and enable the `subCreate` flag.
 ```
  "subCreate": true,
 ```
-This flag is used to tell graphback that we would like to generate the Subscriptions, particularly when a schema type is created.
+This flag is used to tell graphback that we would like to generate the Subscriptions, particularly when a items are created.
 
 6. Run `graphback generate` to generate schema and resolvers
 
@@ -100,10 +102,13 @@ This flag is used to tell graphback that we would like to generate the Subscript
 9. The server will be ready at http://localhost:4000/graphql
 
 10. The server offers the playground as a way to interact with its API.
-It is loaded with example queries that can be used to access data and execute GraphQL queries - createTask, updateTask etc.
-Please try to execute some operations directly in the server. 
+It is loaded with example queries that can be used to access data - createTask, updateTask etc.
+Please try to execute some operations directly using playground.
 
-The Playground also offers documentation for all available operations that we can replicate back to the server. This is automatically generated from the GraphQL Schema.
+> Note: Please make any change in the playground editor first to see queries available when pressing big play button. 
+
+The Playground also offers documentation for all available operations that we can replicate back to server. 
+Documentation is automatically generated from the GraphQL Schema.
 
 ## 2. Building Your first GraphQL Client with React, GraphQL and AeroGear DataSync
 
