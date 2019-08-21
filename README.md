@@ -95,7 +95,9 @@ This flag is used to tell graphback that we would like to generate the Subscript
 
 6. Run `graphback generate` to generate schema and resolvers
 
-7. Run `docker-compose up -d` to run your database and `graphback db` to create database resources in postgres database.
+7. Run `docker-compose up -d` to run your database. 
+
+7a. Run `graphback db` to create database resources in postgres database.
 
 8. Run `npm run start` to start the server
 
