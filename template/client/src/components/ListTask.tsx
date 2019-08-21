@@ -13,7 +13,7 @@ export const Tasks: React.FC = () => {
     const { loading, error, data, subscribeToMore } = useQuery(TaskQuery, {
         fetchPolicy: "cache-and-network"
     })
-    if (subscribed) {
+    if (!subscribed) {
         initSubscription(subscribeToMore);
         setSubscribed(true)
     }
