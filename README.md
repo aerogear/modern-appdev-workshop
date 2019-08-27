@@ -5,7 +5,7 @@ AeroGear and Mobile Developer service technologies
 
 ## General information
 
-This tutorial is backed by [aerogear/modern-appdev-workshop](https://github.com/aerogear/modern-appdev-workshop) github repository.
+This tutorial is hosted at [https://aerogear.github.io/modern-appdev-workshop/](https://aerogear.github.io/modern-appdev-workshop/) with source in the GitHub repository [aerogear/modern-appdev-workshop](https://github.com/aerogear/modern-appdev-workshop).
 
 This repository contains a template application for the [`graphback`](https://www.npmjs.com/package/graphback-cli) command line client.
 
