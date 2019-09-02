@@ -6,6 +6,7 @@
   "main": "dist/src/index.js",
   "scripts": {
     "start": "ts-node src/index.ts",
+    "develop": "ts-node src/index.ts",
     "build": "tsc",
     "serve": "node dist/src/index.js",
     "watch": "graphback watch"
