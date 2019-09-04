@@ -39,7 +39,7 @@ The workshop is divided into the following sections:
 ## Prerequisites
 
 - Node.js LTS 10 
-- Docker and docker-compose
+- Latest versions of docker and docker-compose. 
 - Visual Studio Code (or other IDE)
 
 ## 1. Bulding your first GraphQL server using AeroGear Graphback
@@ -49,6 +49,8 @@ to generate a fully functional Node.js based server offering
 GraphQL and RESTful APIs out of the box based on developer provided business model.
 Graphback generates the general data access methods like find, create, delete etc. along with 
 live updates called subscriptions.
+
+> NOTE: Graphback is an AeroGear community supported library
 
 In this chapter we are going to build a sample application that will
 be based on the custom server template we have provided. 
@@ -76,10 +78,17 @@ In cmd please answer questions as follows:
 ? Do you want to include a example model? No
 ? Choose your database PostgreSQL
 ```
+
+Graphback project will generate new project for you based on template that was prepared for this workshop
+
 3. Change directory into project folder
 ```
 cd node-workshop
 ```
+
+Folder should contain Node.js Server in root folder and `client` folder that contains react based application 
+that will contact with the server.
+
 4. Review the `Task.graphql` file inside `model` with your GraphQL types.
 This file was added as part of the template. GraphBack allows you to 
 provide your own business logic, but for this example we will use logic that
@@ -95,9 +104,13 @@ This flag is used to tell graphback that we would like to generate the Subscript
 
 6. Run `graphback generate` to generate schema and resolvers
 
+Graphback will generate source code for accessing data from the database along with GraphQL schema.
+
 7. Run `docker-compose up -d` to run your database. 
 
 7a. Run `graphback db` to create database resources in postgres database.
+
+Graphback will generate database tables that will reflect schema we have provided in model.
 
 8. Run `npm run start` to start the server
 
