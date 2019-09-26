@@ -1,9 +1,9 @@
 import knex from 'knex'
-import * as config from '../config.json'
+import * as config from '../graphback.json'
 
 export async function connect(options: knex.MySqlConnectionConfig) {
   const db = knex({
-    client: config.database,
+    client: config.db.database,
     connection: options
   })
   // Not required for localhost
