@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import * as config from '../../config.json'
+import * as config from '../../graphback.json'
 
 /**
  * config class
@@ -16,11 +16,11 @@ class Config {
     this.port = process.env.PORT || 4000
 
     this.db = {
-      host: process.env.DB_HOST || config.dbConfig.host,
-      user: process.env.DB_USER || config.dbConfig.user,
-      password: process.env.DB_PASSWORD || config.dbConfig.password,
-      database: process.env.DB_DATABASE || config.dbConfig.database,
-      port: process.env.DB_PORT || config.dbConfig.port
+      host: process.env.DB_HOST || config.db.dbConfig.host,
+      user: process.env.DB_USER || config.db.dbConfig.user,
+      password: process.env.DB_PASSWORD || config.db.dbConfig.password,
+      database: process.env.DB_DATABASE || config.db.dbConfig.database,
+      port: process.env.DB_PORT || config.db.dbConfig.port
     }
 
     this.keycloakConfigPath = process.env.KEYCLOAK_CONFIG || path.resolve(__dirname, './keycloak.json')
