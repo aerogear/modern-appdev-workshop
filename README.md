@@ -77,6 +77,7 @@ In cmd please answer questions as follows:
 ```
 ? Do you want to include a example model? No
 ? Choose your database PostgreSQL
+? Do you want to generate client-side queries? Yes
 ```
 
 Graphback project will generate new project for you based on template that was prepared for this workshop
@@ -96,7 +97,7 @@ was provided as part of the template. We can extend it at any point later.
 
 5. Subscriptions are used in GraphQL to enable recieving real time updates from server. 
 Graphback offers out of the box support for subscriptions providing updates for create, update and delete operations separately. For this workshop we going to consume only create 
-Open `config.json` in the root of the directory and enable the `subCreate` flag.
+Open `graphback.json` in the root of the directory and enable the `subCreate` flag.
 ```
  "subCreate": true,
 ```
