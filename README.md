@@ -67,7 +67,7 @@ The example server contains the following technologies:
 
 1. Install graphback client
 ```
- npm install -g graphback-cli
+ npm install -g graphback-cli@0.9.6
 ```
 2. Create new project based on template
 ```
