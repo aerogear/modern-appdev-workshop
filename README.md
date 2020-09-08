@@ -3,6 +3,8 @@
 Workshop for enterprise enabled modern application development using 
 AeroGear and Mobile Developer service technologies
 
+**No longer up to date**. See: https://github.com/aerogear/datasync-starter
+
 ## General information
 
 This tutorial is hosted at [https://aerogear.github.io/modern-appdev-workshop/](https://aerogear.github.io/modern-appdev-workshop/) with source in the GitHub repository [aerogear/modern-appdev-workshop](https://github.com/aerogear/modern-appdev-workshop).
